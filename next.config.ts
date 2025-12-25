@@ -37,11 +37,9 @@ const nextConfig: NextConfig = {
     minimumCacheTTL: 60,
   },
 
-  /* 3. Các tính năng thử nghiệm (React Compiler nằm ở đây) */
+  /* 3. Các tính năng thử nghiệm */
   experimental: {
-    // @ts-expect-error - reactCompiler is a valid experimental option but missing from types
-    reactCompiler: true,
-    // optimizePackageImports: ['lucide-react', 'framer-motion'], // Gợi ý: Tối ưu load thư viện
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
 };
 

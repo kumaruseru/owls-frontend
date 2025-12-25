@@ -1,12 +1,29 @@
 'use client';
 
-import { ReactLenis } from '@studio-freight/react-lenis'
-
+import { useEffect } from 'react';
+import Lenis from 'lenis';
 import { Toaster } from 'react-hot-toast';
 
-export function Providers({ children }: { children: any }) {
+export function Providers({ children }: { children: React.ReactNode }) {
+    useEffect(() => {
+        const lenis = new Lenis({
+            lerp: 0.1,
+            duration: 1.5,
+            smoothWheel: true,
+        });
+
+        function raf(time: number) {
+            lenis.raf(time);
+            requestAnimationFrame(raf);
+        }
+
+        requestAnimationFrame(raf);
+
+        return () => lenis.destroy();
+    }, []);
+
     return (
-        <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothWheel: true }}>
+        <>
             {children}
             <Toaster
                 position="top-center"
@@ -36,6 +53,6 @@ export function Providers({ children }: { children: any }) {
                     },
                 }}
             />
-        </ReactLenis>
+        </>
     );
 }

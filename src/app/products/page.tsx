@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useSearchParams } from 'next/navigation';
@@ -34,7 +34,7 @@ interface Category {
     product_count: number;
 }
 
-export default function ProductsPage() {
+function ProductsContent() {
     const searchParams = useSearchParams();
     const [products, setProducts] = useState<Product[]>([]);
     const [categories, setCategories] = useState<Category[]>([]);
@@ -385,5 +385,17 @@ export default function ProductsPage() {
                 </div>
             </div>
         </div>
+    );
+}
+
+export default function ProductsPage() {
+    return (
+        <Suspense fallback={
+            <div className="min-h-screen bg-black flex items-center justify-center">
+                <Loader2 size={40} className="animate-spin text-purple-500" />
+            </div>
+        }>
+            <ProductsContent />
+        </Suspense>
     );
 }
