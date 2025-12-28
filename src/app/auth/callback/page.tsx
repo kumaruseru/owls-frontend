@@ -29,9 +29,9 @@ function CallbackContent() {
             try {
                 // If state is not present, we might assume github for legacy or show error
                 // For now, let's default to github if missing, or use 'google' if state is google
-                const provider = state === 'google' ? 'google' : 'github';
+                const provider = state?.startsWith('google') || state === 'google' ? 'google' : 'github';
 
-                await socialLogin(provider, code);
+                await socialLogin(provider, code, state || undefined);
                 setStatus('success');
                 toast.success(`Successfully logged in with ${provider === 'google' ? 'Google' : 'GitHub'}`);
                 router.replace('/');

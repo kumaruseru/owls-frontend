@@ -6,6 +6,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import api from '@/lib/api';
+import { useAuthStore } from './auth-store';
 
 // --- TYPES ---
 
@@ -78,6 +79,11 @@ export const useCartStore = create<CartState>()(
             error: null,
 
             fetchCart: async (silent = false) => {
+                if (!useAuthStore.getState().isAuthenticated) {
+                    set({ cart: null, isLoading: false });
+                    return;
+                }
+
                 if (!silent) set({ isLoading: true, error: null });
                 try {
                     const response = await api.get('/cart/');
