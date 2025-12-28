@@ -86,7 +86,10 @@ export default function LoginPage() {
             toast.success('Welcome back.');
             router.push('/');
         } catch (error: any) {
-            toast.error(error.response?.data?.detail || 'Login failed');
+            // Security: Use generic error message to prevent User Enumeration
+            // error.response?.data?.detail might reveal "User not found" vs "Wrong password"
+            console.error("Login Error:", error);
+            toast.error('Invalid email or password');
         } finally {
             setIsSubmitting(false);
         }
