@@ -1,6 +1,6 @@
 'use client';
 
-import { ReactLenis } from '@studio-freight/react-lenis'
+import { ReactLenis } from 'lenis/react'
 import { Toaster } from 'react-hot-toast';
 import { MaintenanceCheck } from '@/components/common/MaintenanceCheck';
 
