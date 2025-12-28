@@ -92,8 +92,9 @@ export const useAuthStore = create<AuthState>()(
                     }
 
                     const { access, refresh } = response.data;
-                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Lax', path: '/' }); // 1 hour
-                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Lax', path: '/' }); // 7 days
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Strict', secure: isProduction, path: '/' }); // 1 hour
+                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Strict', secure: isProduction, path: '/' }); // 7 days
 
                     await get().fetchProfile();
                     set({ isAuthenticated: true });
@@ -112,9 +113,9 @@ export const useAuthStore = create<AuthState>()(
 
                     const response = await api.post('/auth/login/2fa/', payload);
                     const { access, refresh } = response.data;
-
-                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Lax', path: '/' });
-                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Lax', path: '/' });
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Strict', secure: isProduction, path: '/' });
+                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Strict', secure: isProduction, path: '/' });
 
                     await get().fetchProfile();
                     set({ isAuthenticated: true });
@@ -132,9 +133,9 @@ export const useAuthStore = create<AuthState>()(
                     // Currently my backend view returns tokens in both cases.
 
                     const { access, refresh } = response.data;
-
-                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Lax', path: '/' });
-                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Lax', path: '/' });
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Strict', secure: isProduction, path: '/' });
+                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Strict', secure: isProduction, path: '/' });
 
                     await get().fetchProfile();
                     set({ isAuthenticated: true });
@@ -157,9 +158,9 @@ export const useAuthStore = create<AuthState>()(
                 try {
                     const response = await api.post('/auth/register/', data);
                     const { user, access, refresh } = response.data;
-
-                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Lax', path: '/' });
-                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Lax', path: '/' });
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Strict', secure: isProduction, path: '/' });
+                    Cookies.set('refresh_token', refresh, { expires: 7, sameSite: 'Strict', secure: isProduction, path: '/' });
 
                     set({ user, isAuthenticated: true });
                 } finally {

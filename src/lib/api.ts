@@ -65,7 +65,8 @@ api.interceptors.response.use(
                     });
 
                     const { access } = response.data;
-                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Lax', path: '/' }); // 1 hour
+                    const isProduction = process.env.NODE_ENV === 'production';
+                    Cookies.set('access_token', access, { expires: 1 / 24, sameSite: 'Strict', secure: isProduction, path: '/' }); // 1 hour
 
                     api.defaults.headers.common['Authorization'] = `Bearer ${access}`;
                     originalRequest.headers.Authorization = `Bearer ${access}`;

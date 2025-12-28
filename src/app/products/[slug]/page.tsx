@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { Star, Heart, Minus, Plus, Truck, Shield, ArrowLeft, AlertCircle } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { motion, AnimatePresence } from 'framer-motion';
+import DOMPurify from 'isomorphic-dompurify';
 
 import api from '@/lib/api';
 import { useCartStore } from '@/store/cart-store';
@@ -401,7 +402,9 @@ export default function ProductDetailPage() {
                                                 transition={{ duration: 0.3 }}
                                                 className="prose prose-lg dark:prose-invert max-w-none prose-headings:font-display prose-headings:font-bold prose-headings:text-white prose-p:text-neutral-400 prose-p:leading-relaxed"
                                             >
-                                                <div dangerouslySetInnerHTML={{ __html: product.description || '<p>No description available.</p>' }} />
+                                                <div dangerouslySetInnerHTML={{
+                                                    __html: DOMPurify.sanitize(product.description || '<p>No description available.</p>')
+                                                }} />
                                             </motion.div>
                                         )}
 
