@@ -101,7 +101,7 @@ export default function Header() {
                     </div>
 
                     {/* Center: Desktop Nav (Scrollable if needed) */}
-                    <nav className="hidden lg:flex items-center bg-white/5 rounded-full p-1 border border-white/5 overflow-x-auto no-scrollbar max-w-[600px]">
+                    <nav className="hidden lg:flex items-center bg-white/5 rounded-full p-1 border border-white/5 overflow-x-auto overflow-y-hidden scrollbar-hide max-w-[600px]">
                         {navLinks.map((link) => {
                             const isActive = isActiveLink(link.href);
                             return (
