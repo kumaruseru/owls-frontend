@@ -43,6 +43,8 @@ interface AuthState {
     isLoading: boolean;
     hasHydrated: boolean;
     socialAccounts: SocialAccount[];
+    requires2FA: boolean;
+    tempToken: string | null;
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     login: (email: string, password: string) => Promise<any>;
@@ -77,6 +79,8 @@ export const useAuthStore = create<AuthState>()(
             isLoading: false,
             hasHydrated: false,
             socialAccounts: [],
+            requires2FA: false,
+            tempToken: null,
 
             setHasHydrated: (hydrated: boolean) => {
                 set({ hasHydrated: hydrated });
@@ -128,9 +132,15 @@ export const useAuthStore = create<AuthState>()(
                 set({ isLoading: true });
                 try {
                     const response = await api.post(`/auth/social/${provider}/callback/`, { code, state });
-                    // If response returns tokens, it's a login or link
-                    // But if account linking logic is inside callback view, it returns tokens or link confirmation?
-                    // Currently my backend view returns tokens in both cases.
+
+                    if (response.data.requires_2fa) {
+                        set({
+                            requires2FA: true,
+                            tempToken: response.data.temp_token,
+                            isLoading: false
+                        });
+                        return;
+                    }
 
                     const { access, refresh } = response.data;
                     const isProduction = process.env.NODE_ENV === 'production';

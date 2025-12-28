@@ -32,6 +32,15 @@ function CallbackContent() {
                 const provider = state?.startsWith('google') || state === 'google' ? 'google' : 'github';
 
                 await socialLogin(provider, code, state || undefined);
+
+                // Check if 2FA is required
+                const authStore = useAuthStore.getState();
+                if (authStore.requires2FA) {
+                    setStatus('success');
+                    router.replace('/login');
+                    return;
+                }
+
                 setStatus('success');
                 toast.success(`Successfully logged in with ${provider === 'google' ? 'Google' : 'GitHub'}`);
                 router.replace('/');

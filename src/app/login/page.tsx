@@ -54,6 +54,24 @@ export default function LoginPage() {
         }
     }, [step]);
 
+    // Check global 2FA State (e.g. from Social Login redirect)
+    useEffect(() => {
+        const authStore = useAuthStore.getState();
+        if (authStore.requires2FA && authStore.tempToken) {
+            setTempToken(authStore.tempToken);
+            setStep('2fa');
+            toast.custom((t) => (
+                <div className={`${t.visible ? 'animate-enter' : 'animate-leave'} flex items-center bg-black/80 border border-purple-500/50 backdrop-blur-md text-white rounded-xl p-4 shadow-xl`}>
+                    <Shield className="w-5 h-5 text-purple-400 mr-3" />
+                    <div>
+                        <p className="font-bold text-sm">2FA Required</p>
+                        <p className="text-xs text-neutral-400">Please verify your social account.</p>
+                    </div>
+                </div>
+            ));
+        }
+    }, [step]); // Run when step changes or on mount
+
     // Email Cooldown Timer
     useEffect(() => {
         if (emailCooldown > 0) {
