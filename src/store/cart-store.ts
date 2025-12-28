@@ -45,6 +45,7 @@ interface CartState {
     updateQuantity: (productId: string, quantity: number) => Promise<void>;
     removeFromCart: (productId: string) => Promise<void>;
     clearCart: () => Promise<void>;
+    reset: () => void;
 }
 
 // --- MODULE STATE ---
@@ -245,6 +246,10 @@ export const useCartStore = create<CartState>()(
                     set({ cart: prevCart, error: error.response?.data?.error || 'Failed to clear cart' });
                 }
             },
+
+            reset: () => {
+                set({ cart: null, error: null, isLoading: false });
+            },
         }),
         {
             name: 'cart-storage',
@@ -252,3 +257,11 @@ export const useCartStore = create<CartState>()(
         }
     )
 );
+
+// Subscribe to Auth changes to clear cart on logout
+// This prevents data leaks between users on shared devices
+useAuthStore.subscribe((state, prevState) => {
+    if (prevState.isAuthenticated && !state.isAuthenticated) {
+        useCartStore.getState().reset();
+    }
+});
