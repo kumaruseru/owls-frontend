@@ -3,6 +3,10 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* 1. Kích hoạt React Strict Mode để dev tốt hơn */
   reactStrictMode: true,
+  // Security: Disable source maps in production to prevent code exposure
+  productionBrowserSourceMaps: false,
+  // Security: Remove X-Powered-By header to reduce fingerprinting
+  poweredByHeader: false,
 
   /* 2. Cấu hình hình ảnh (Dùng remotePatterns thay cho domains) */
   images: {
